@@ -19,4 +19,8 @@ public abstract class Product {
         return this.price;
     }
 
+    public String toString(){
+        return this.getName() + " " +  String.valueOf(this.getPrice());
+    }
+
 }

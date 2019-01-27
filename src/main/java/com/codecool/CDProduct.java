@@ -12,4 +12,8 @@ public class CDProduct extends Product{
     public int getNumOfTracks(){
         return  this.numOfTracks;
     }
+
+    public String toString(){
+        return super.toString() + " " + String.valueOf(this.getNumOfTracks());
+    }
 }
