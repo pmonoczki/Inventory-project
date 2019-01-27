@@ -1,0 +1,2 @@
+public class CDProductTest {
+}
