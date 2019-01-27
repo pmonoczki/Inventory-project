@@ -2,6 +2,7 @@ package com.codecool;
 
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -16,6 +17,8 @@ import java.util.List;
 abstract class Store implements StoreCapable {
 
     private final String FILE_NAME = "products.xml";
+
+    private final String PRODUCT_TAG_NAME = "product";
 
     protected Product createProduct(String type, String name, int price, int size) {
         if (type.equals("CD")) {
@@ -46,6 +49,12 @@ abstract class Store implements StoreCapable {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document d = db.parse(is);
+
+            Element root = d.getDocumentElement();
+
+            for (int i = 0; i < root.getElementsByTagName(PRODUCT_TAG_NAME).getLength(), i++){
+
+            }
 
 
         } catch (IOException e) {
