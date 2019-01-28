@@ -42,7 +42,7 @@ abstract class Store implements StoreCapable {
 
     }
 
-    private List<Product> loadProducts() {
+    protected List<Product> loadProducts() {
         List<Product> l = new ArrayList<Product>();
         try {
             InputStream is = new FileInputStream("");
