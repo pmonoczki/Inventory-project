@@ -11,8 +11,9 @@ public class StoreManager {
         this.sc = storage;
     }
 
-    public int getTotalPrice(){
+    public int getTotalPrice() throws NoStorageException {
 
+        checkRaise();
         int sum = 0;
         for (Product p : sc.getAllProducts()){
             sum += p.getPrice();
@@ -21,22 +22,34 @@ public class StoreManager {
         return sum;
     }
 
-    public void addCDProduct(String name, int price, int tracks){
+    public void addCDProduct(String name, int price, int tracks) throws NoStorageException {
+
+        checkRaise();
         sc.storeCDProduct(name, price, tracks);
     }
 
-    public void addBookProduct(String name, int price, int pages){
+    public void addBookProduct(String name, int price, int pages) throws NoStorageException {
+
+        checkRaise();
         sc.storeBookProduct(name, price, pages);
     }
 
-    public List<String> listProducts(){
-        List<String> l = new ArrayList<String>();
+    public String listProducts() throws NoStorageException {
+        checkRaise();
+        StringBuilder sb = new StringBuilder();
         for(Product p : sc.getAllProducts()){
-            l.add(p.toString());
+            sb.append(p.toString());
         }
-        return l;
+        return sb.toString();
 
 
+    }
+
+
+    private void checkRaise() throws NoStorageException {
+        if (this.sc == null){
+            throw new NoStorageException("No storage has been added");
+        }
     }
 
 

@@ -6,12 +6,32 @@
 package com.codecool;
 
 /**
- *
  * Lods the inventory project
+ *
  * @param args controls the program by arguments
  */
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) {
+
+        try {
+            System.out.println(
+                    System.getProperty("user.dir"));
+
+            PersistentStore ps = new PersistentStore();
+            StoreManager sm = new StoreManager();
+
+            sm.addStorage(ps);
+
+            sm.addBookProduct("test", 1500, 142);
+
+
+            System.out.println(sm.listProducts());
+        } catch (NoStorageException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+
+
     }
 }
 

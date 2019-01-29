@@ -16,7 +16,8 @@ public class PersistentStore extends Store{
     }
 
     public List<Product> getAllProducts() {
-        return loadProducts();
+
+        return productList;
     }
 
     public void storeCDProduct(String name, int price, int tracks) {

@@ -1,6 +1,5 @@
 package com.codecool;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -9,16 +8,22 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.cert.CertStoreParameters;
 import java.util.ArrayList;
 import java.util.List;
 
 abstract class Store implements StoreCapable {
 
-    private final String FILE_NAME = "products.xml";
+    private final String FILE_NAME = "src/products.xml";
 
     private final String PRODUCT_TAG_NAME = "product";
 
@@ -33,8 +38,51 @@ abstract class Store implements StoreCapable {
     protected abstract void storeProduct(Product product);
 
     private void saveToXml(Product product) {
+        try {
+
+            InputStream is = new FileInputStream(FILE_NAME);
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document d = db.parse(is);
+
+            Element root = d.getDocumentElement();
+
+            Element e = d.createElement("product");
+            e.setAttribute("name", product.getName());
+            e.setAttribute("price", String.valueOf(product.getPrice()));
+            if (product instanceof CDProduct){
+                e.setAttribute("type", "cd");
+                e.setAttribute("size",
+                        String.valueOf(
+                                ((CDProduct)product).getNumOfTracks()
+                ));
+            }
+            else{
+                e.setAttribute("type", "book");
+                e.setAttribute("size",
+                        String.valueOf(
+                                ((BookProduct)product).getNumOfPages()
+                        ));
+
+            }
+
+            root.appendChild(e);
+
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            Result output = new StreamResult(new File(FILE_NAME));
+            Source input = new DOMSource(d);
 
 
+
+            transformer.transform(input, output);
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
     }
 
     /**
@@ -50,8 +98,8 @@ abstract class Store implements StoreCapable {
 
     protected List<Product> loadProducts() {
         List<Product> l = new ArrayList<Product>();
-        try {onenore
-            InputStream is = new FileInputStream("");
+        try {
+            InputStream is = new FileInputStream(FILE_NAME);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document d = db.parse(is);
@@ -63,13 +111,18 @@ abstract class Store implements StoreCapable {
                 if (n.getNodeType() == n.ELEMENT_NODE){
                     Element e = (Element)n;
 
-                    Product o = null;
+                    Product p =
+                            createProduct(e.getAttribute("type"),
+                                    e.getAttribute("name"),
+                                   Integer.parseInt( e.getAttribute("price")),
+                                    Integer.parseInt( e.getAttribute("size")));
+                    l.add(p);
 
 
                 }
 
             }
-
+            is.close();
 
         } catch (IOException e) {
             e.printStackTrace();
