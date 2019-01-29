@@ -52,7 +52,7 @@ class StoreManagerTest {
 
 
         try {
-            sm.listProducts();
+
             sm.addStorage(ps);
 
             UUID uuid = UUID.randomUUID();
@@ -76,7 +76,7 @@ class StoreManagerTest {
 
 
         try {
-            sm.listProducts();
+
             sm.addStorage(ps);
 
             UUID uuid = UUID.randomUUID();
