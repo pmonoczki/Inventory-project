@@ -13,14 +13,16 @@ package com.codecool;
 public class Main {
     public static void main(String[] args) {
 
+
         try {
             System.out.println(
                     System.getProperty("user.dir"));
 
             PersistentStore ps = new PersistentStore();
             StoreManager sm = new StoreManager();
+            DBStore ds = new DBStore();
 
-            sm.addStorage(ps);
+            sm.addStorage(ds);
 
             sm.addBookProduct("test", 1500, 142);
 
